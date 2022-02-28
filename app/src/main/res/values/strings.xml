@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Whipmobility Test</string>
+    <string name="label_dismiss">dismiss</string>
+    <string name="error_network">Failed to connect to server</string>
+    <string name="error_connection_failed">Unexpected error please call system manager</string>
+    <string name="error_unauthorized_user">Session expired</string>
+</resources>

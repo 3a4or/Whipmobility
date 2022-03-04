@@ -9,6 +9,8 @@ import com.ashour.whipmobilitytest.data.entitities.Result
 @Singleton
 class BaseRepository @Inject constructor(private val api: Api) {
 
+    suspend fun getChartsData(scope: String) = handleErrors { api.getChartsData(scope) }
+
     private suspend fun <T> handleErrors(func: suspend () -> Response<T>): Result<T> {
         return try {
             val response = func()

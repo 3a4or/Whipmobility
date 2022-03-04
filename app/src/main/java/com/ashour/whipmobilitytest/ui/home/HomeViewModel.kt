@@ -13,23 +13,27 @@ import com.ashour.whipmobilitytest.utils.SingleLiveEvent
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repo: BaseRepository) : BaseViewModel() {
 
-    val result = SingleLiveEvent<Triple<ArrayList<String>, ArrayList<Int>, ArrayList<Int>>>()
+    val result = SingleLiveEvent<Triple<ArrayList<String>, ArrayList<Int>, ArrayList<Int>>?>()
 
     fun getChartsData(scope: String) {
         viewModelScope.launch {
             dataLoading.value = true
             when (val response = repo.getChartsData(scope)) {
                 is Result.Successful -> {
-                    val lineChartsObject: LineChart = response.data.response.data.analytics.lineCharts[0][0]
-                    val keys = ArrayList<String>()
-                    val jobs = ArrayList<Int>()
-                    val services = ArrayList<Int>()
-                    for (item in lineChartsObject.items) {
-                        keys.add(item.key)
-                        jobs.add(item.value[0].value)
-                        services.add(item.value[1].value)
+                    if (response.data.response.data.analytics.lineCharts != null) {
+                        val lineChartsObject: LineChart = response.data.response.data.analytics.lineCharts[0][0]
+                        val keys = ArrayList<String>()
+                        val jobs = ArrayList<Int>()
+                        val services = ArrayList<Int>()
+                        for (item in lineChartsObject.items) {
+                            keys.add(item.key)
+                            jobs.add(item.value[0].value)
+                            services.add(item.value[1].value)
+                        }
+                        result.value = Triple(keys, jobs, services)
+                    } else {
+                        result.value = null
                     }
-                    result.value = Triple(keys, jobs, services)
                 }
                 is Result.BaseError -> error.value = response
             }

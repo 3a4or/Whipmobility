@@ -6,5 +6,8 @@ object IdManager {
 
     // scope values
     const val ALL = "ALL"
+    const val TODAY = "TODAY"
+    const val LAST_7_DAYS = "LAST_7_DAYS"
+    const val LAST_30_DAYS = "LAST_30_DAYS"
 
 }

@@ -2,9 +2,7 @@ package com.ashour.whipmobilitytest.ui.home
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.viewModels
 import com.ashour.whipmobilitytest.R
 import com.ashour.whipmobilitytest.base.BaseFragment
@@ -35,8 +33,9 @@ class HomeFragment : BaseFragment() {
         mBinding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         mBinding.lifecycleOwner = viewLifecycleOwner
         mBinding.viewModel = viewModel
+        setHasOptionsMenu(true)
         initObserving()
-        viewModel.getChartsData(IdManager.ALL)
+        viewModel.getChartsData(IdManager.LAST_7_DAYS)
         return mBinding.root
     }
 
@@ -45,6 +44,8 @@ class HomeFragment : BaseFragment() {
             if (it != null && it.first.isNotEmpty() && it.second.isNotEmpty() && it.third.isNotEmpty()) {
                 val data = BarData( getChartsDataSet())
                 drawCharts(data)
+            } else {
+                showError(getString(R.string.error_no_charts))
             }
         }
     }
@@ -78,5 +79,32 @@ class HomeFragment : BaseFragment() {
         dataSets.add(barDataSet1)
         dataSets.add(barDataSet2)
         return dataSets
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.filter_scopes_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_All -> {
+                viewModel.getChartsData(IdManager.ALL)
+                true
+            }
+            R.id.action_today -> {
+                viewModel.getChartsData(IdManager.TODAY)
+                true
+            }
+            R.id.action_last_week -> {
+                viewModel.getChartsData(IdManager.LAST_7_DAYS)
+                true
+            }
+            R.id.action_last_month -> {
+                viewModel.getChartsData(IdManager.LAST_30_DAYS)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

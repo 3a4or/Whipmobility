@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_All" android:title="@string/label_all"/>
+    <item android:id="@+id/action_today" android:title="@string/label_today"/>
+    <item android:id="@+id/action_last_week" android:title="@string/label_last_week"/>
+    <item android:id="@+id/action_last_month" android:title="@string/label_month"/>
+</menu>
